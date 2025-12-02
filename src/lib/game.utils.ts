@@ -8,7 +8,7 @@ import {
   PlayerModel,
   Point,
   TileModel,
-} from ".game.model";
+} from "./game.model";
 import { BLOCK, PLAYER, TILE, TILE_H, TILE_W } from "./game.constants";
 
 export const sortByDepth = (a: GameObjectsType, b: GameObjectsType) =>

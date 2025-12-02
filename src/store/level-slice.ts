@@ -76,14 +76,14 @@ export const LevelSlice = createSlice({
       );
 
       const updateGameObjects: GameObjectsType[] = [
-        ...gameObjects?.slice(0, idx),
+        ...gameObjects.slice(0, idx),
         {
           ...gameObjects[idx],
           pos: action.payload.pos,
           coord: action.payload.coord,
           depth: action.payload.depth + 5,
         },
-        ...gameObjects?.slice(idx + 1),
+        ...gameObjects.slice(idx + 1),
       ];
 
       state.gameObjects = updateGameObjects.sort(sortByDepth);
@@ -114,7 +114,7 @@ export const LevelSlice = createSlice({
 
       state.isLevelComplete = updateGameObjects
         .filter((obj) => obj.type === BLOCK)
-        .every((obj: any) => obj.isComplete);
+        .every((obj: BlockModel) => obj.isComplete);
 
       state.gameObjects = updateGameObjects.sort(sortByDepth);
     },

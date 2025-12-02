@@ -1,12 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import LevelSlice from "./LevelSlice";
-import MapSlice from "./map-slice";
+import LevelSlice from "./level-slice";
 
 export const store = configureStore({
   reducer: {
     level: LevelSlice.reducer,
-    map: MapSlice.reducer,
   },
 });
 

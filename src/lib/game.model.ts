@@ -1,4 +1,4 @@
-import { TILE, BLOCK, PLAYER, UP, DOWN, LEFT, RIGHT } from "utils/constants";
+import { TILE, BLOCK, PLAYER, UP, DOWN, LEFT, RIGHT } from "./game.constants";
 
 export type ObjectType = typeof TILE | typeof BLOCK | typeof PLAYER;
 export type MoveType = typeof UP | typeof DOWN | typeof LEFT | typeof RIGHT;
