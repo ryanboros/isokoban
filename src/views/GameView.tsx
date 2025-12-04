@@ -2,16 +2,26 @@ import { FC, useCallback, useEffect, useRef } from "react";
 import { Layer, Stage } from "react-konva";
 
 import Block from "@/components/block/Block";
+import CompleteModal from "@/components/complete-modal/CompleteModal";
 import GameControls from "@/components/game-controls/GameControls";
+import GameFooter from "@/components/game-footer/GameFooter";
 import Player from "@/components/player/Player";
 import Tile from "@/components/tile/Tile";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
-import { DOWN, BLOCK, LEFT, PLAYER, RIGHT, UP } from "@/lib/game.constants";
+import {
+  CANVAS_SIZE,
+  DOWN,
+  BLOCK,
+  LEFT,
+  LEVELS,
+  PLAYER,
+  RIGHT,
+  UP,
+} from "@/lib/game.constants";
 import { getBlock, getNextTile, hasBlock } from "@/lib/game.utils";
 import { GameObjectsType, MoveType } from "@/lib/game.model";
 import { fetchLevel, LevelActions } from "@/store/level-actions";
 import { getTheBlocks, getThePlayer, getTheTiles } from "@/store/level-slice";
-import CompleteModal from "../components/complete-modal/CompleteModal";
 
 const GameView: FC = () => {
   /**
@@ -21,7 +31,7 @@ const GameView: FC = () => {
 
   const dispatch = useAppDispatch();
 
-  const { gameObjects, isLevelComplete, level } = useAppSelector(
+  const { currentLevel, gameObjects, isLevelComplete, level } = useAppSelector(
     (state) => state.level
   );
   const blocks = useAppSelector(getTheBlocks) as BlockModel[];
@@ -33,18 +43,13 @@ const GameView: FC = () => {
    */
   useEffect(() => {
     if (level == null) {
-      dispatch(fetchLevel("microban001"));
+      dispatch(fetchLevel(LEVELS[currentLevel].data));
     } else {
       if (gameObjects == null) {
-        dispatch(
-          LevelActions.buildLevel({
-            height: 480,
-            width: 640,
-          })
-        );
+        dispatch(LevelActions.buildLevel(CANVAS_SIZE));
       }
     }
-  }, [dispatch, gameObjects, level]);
+  }, [currentLevel, dispatch, gameObjects, level]);
 
   /**
    * METHODS
@@ -146,6 +151,7 @@ const GameView: FC = () => {
             })}
           </Layer>
         </Stage>
+        <GameFooter />
       </div>
       <CompleteModal open={isLevelComplete} />
     </>

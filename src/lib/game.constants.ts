@@ -1,3 +1,5 @@
+import { Dimensions, Level } from "./game.model";
+
 export const COLORS = {
   // blues
   AZURE: "#0099FF",
@@ -34,8 +36,13 @@ export const GRADIENTS = {
   ],
 };
 
-export const TILE_W = 60;
-export const TILE_H = 34;
+export const CANVAS_SIZE: Dimensions = {
+  height: 480,
+  width: 640,
+};
+
+export const TILE_W: number = 60;
+export const TILE_H: number = 34;
 
 export const TILE = "tile" as const;
 export const BLOCK = "block" as const;
@@ -46,15 +53,15 @@ export const DOWN = "down" as const;
 export const RIGHT = "right" as const;
 export const LEFT = "left" as const;
 
-export const LEVELS = [
-  "microban001",
-  "microban002",
-  "microban003",
-  "microban004",
-  "microban005",
-  "microban007",
-  "microban009",
-  "microban011",
-  "microban012",
-  "microban013",
+export const LEVELS: Level[] = [
+  { data: "microban001", title: "Level 01" },
+  { data: "microban002", title: "Level 02" },
+  { data: "microban003", title: "Level 03" },
+  { data: "microban004", title: "Level 04" },
+  { data: "microban005", title: "Level 05" },
+  { data: "microban007", title: "Level 06" },
+  { data: "microban009", title: "Level 07" },
+  { data: "microban011", title: "Level 08" },
+  { data: "microban012", title: "Level 09" },
+  { data: "microban013", title: "Level 10" },
 ];

@@ -53,3 +53,8 @@ export interface TileModel {
 }
 
 export type GameObjectsType = BlockModel | PlayerModel | TileModel;
+
+export interface Level {
+  data: string;
+  title: string;
+}

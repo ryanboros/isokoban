@@ -17,24 +17,26 @@ import {
   TileModel,
 } from "@/lib/game.model";
 import {
-  getBlocks,
+  createBlocks,
+  createPlayer,
+  createTiles,
   getOrigin,
-  getPlayer,
-  getTiles,
   sortByDepth,
 } from "@/lib/game.utils";
+import { LEVELS } from "../lib/game.constants";
 
 interface LevelProps {
-  level: LevelModel | null;
   gameObjects: GameObjectsType[] | null;
   isLevelComplete: boolean;
+  level: LevelModel | null;
   moveCount: number;
 }
 
 const initialState: LevelProps = {
-  level: null,
+  currentLevel: 0,
   gameObjects: null,
   isLevelComplete: false,
+  level: null,
   moveCount: 0,
 };
 
@@ -45,21 +47,28 @@ export const LevelSlice = createSlice({
     setLevel: (state, action: PayloadAction<LevelModel>) => {
       state.level = action.payload;
     },
+    updateCurrentLevel: (state, action: PayloadAction<number>) => {
+      state.currentLevel = action.payload;
+      state.level = null;
+      state.gameObjects = null;
+      state.isLevelComplete = false;
+      state.moveCount = 0;
+    },
     buildLevel: (state, action: PayloadAction<Dimensions>) => {
       const level: LevelModel = current(state).level as LevelModel;
       const { height, width } = action.payload;
 
       const origin: Point = getOrigin(level.map, width, height);
 
-      const tileObjs: TileModel[] = getTiles(level.map, level.slots, origin);
+      const tileObjs: TileModel[] = createTiles(level.map, level.slots, origin);
 
-      const blockObjs: BlockModel[] = getBlocks(
+      const blockObjs: BlockModel[] = createBlocks(
         level.blocks,
         level.slots,
         origin
       );
 
-      const playerObj: PlayerModel = getPlayer(level.player, origin);
+      const playerObj: PlayerModel = createPlayer(level.player, origin);
 
       state.gameObjects = [...tileObjs, ...blockObjs, playerObj].sort(
         sortByDepth
@@ -121,6 +130,11 @@ export const LevelSlice = createSlice({
   },
 });
 
+export const getTheBlocks = createSelector(
+  (state: RootState) => state?.level?.gameObjects,
+  (gameObjects) => gameObjects?.filter((obj) => obj.type === BLOCK)
+);
+
 export const getThePlayer = createSelector(
   (state: RootState) => state?.level?.gameObjects,
   (gameObjects) => gameObjects?.filter((obj) => obj.type === PLAYER)[0]
@@ -131,9 +145,9 @@ export const getTheTiles = createSelector(
   (gameObjects) => gameObjects?.filter((obj) => obj.type === TILE)
 );
 
-export const getTheBlocks = createSelector(
-  (state: RootState) => state?.level?.gameObjects,
-  (gameObjects) => gameObjects?.filter((obj) => obj.type === BLOCK)
+export const getTheLevelInfo = createSelector(
+  (state: RootState) => state?.level?.currentLevel,
+  (currentLevel) => LEVELS[currentLevel]
 );
 
 export default LevelSlice;

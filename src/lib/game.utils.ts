@@ -11,42 +11,39 @@ import {
 } from "./game.model";
 import { BLOCK, PLAYER, TILE, TILE_H, TILE_W } from "./game.constants";
 
-export const sortByDepth = (a: GameObjectsType, b: GameObjectsType) =>
-  a.depth - b.depth;
-
-export const getTileDepth = (coord: Coordinates) =>
-  coord.row * TILE_H + coord.col * TILE_W + coord.row;
-
-export const checkSlot = (coord: Coordinates, slots: Coordinates[]) =>
+export const checkSlot = (coord: Coordinates, slots: Coordinates[]): boolean =>
   slots.some((slot) => slot.row === coord.row && slot.col === coord.col);
 
-export const getPos = (coord: Coordinates, origin: Point): Point => {
+export const createBlocks = (
+  blocks: Coordinates[],
+  slots: Coordinates[],
+  origin: Point
+): BlockModel[] =>
+  blocks.map((coord) => {
+    return {
+      coord: coord,
+      depth: getTileDepth(coord) + 5,
+      id: uniqueId("block"),
+      isComplete: checkSlot(coord, slots),
+      pos: getPos(coord, origin),
+      type: BLOCK,
+    };
+  });
+
+export const createPlayer = (
+  coord: Coordinates,
+  origin: Point
+): PlayerModel => {
   return {
-    x: origin.x + ((coord.col - coord.row) * TILE_W) / 2,
-    y: origin.y + ((coord.row + coord.col) * TILE_H) / 2,
+    coord: coord,
+    depth: getTileDepth(coord) + 5,
+    id: uniqueId("player"),
+    pos: getPos(coord, origin),
+    type: PLAYER,
   };
 };
 
-export const getOrigin = (
-  map: number[][],
-  width: number,
-  height: number
-): Point => {
-  const rows = size(map);
-  const cols = size(map[0]);
-
-  // center point of stage
-  const cX = width / 2;
-  const cY = height / 2;
-
-  // returns point of first tile to allow the whole map to be centered on stage
-  return {
-    x: cX + ((rows - cols) / 4) * TILE_W,
-    y: cY - ((cols + rows) / 6) * TILE_H,
-  };
-};
-
-export const getTiles = (
+export const createTiles = (
   map: number[][],
   slots: Coordinates[],
   origin: Point
@@ -75,38 +72,37 @@ export const getTiles = (
   return tiles;
 };
 
-export const getBlocks = (
-  blocks: Coordinates[],
-  slots: Coordinates[],
-  origin: Point
-): BlockModel[] =>
-  blocks.map((coord) => {
-    return {
-      coord: coord,
-      depth: getTileDepth(coord) + 5,
-      id: uniqueId("block"),
-      isComplete: checkSlot(coord, slots),
-      pos: getPos(coord, origin),
-      type: BLOCK,
-    };
-  });
+export const getOrigin = (
+  map: number[][],
+  width: number,
+  height: number
+): Point => {
+  const rows = size(map);
+  const cols = size(map[0]);
 
-export const getPlayer = (coord: Coordinates, origin: Point): PlayerModel => {
+  // center point of stage
+  const cX = width / 2;
+  const cY = height / 2;
+
+  // returns point of first tile to allow the whole map to be centered on stage
   return {
-    coord: coord,
-    depth: getTileDepth(coord) + 5,
-    id: uniqueId("player"),
-    pos: getPos(coord, origin),
-    type: PLAYER,
+    x: cX + ((rows - cols) / 4) * TILE_W,
+    y: cY - ((cols + rows) / 6) * TILE_H,
   };
 };
+
+export const getBlock = (tile: TileModel, blocks: BlockModel[]) =>
+  blocks.find(
+    (block) =>
+      block.coord.row === tile.coord.row && block.coord.col === tile.coord.col
+  );
 
 export const getNextTile = (
   move: MoveType,
   distance: number,
   player: PlayerModel,
   tiles: GameObjectsType[]
-) => {
+): TileModel => {
   let { row, col } = player.coord;
 
   switch (move) {
@@ -131,7 +127,17 @@ export const getNextTile = (
   ) as TileModel;
 };
 
-export const hasBlock = (tile: TileModel, blocks: BlockModel[]) =>
+export const getPos = (coord: Coordinates, origin: Point): Point => {
+  return {
+    x: origin.x + ((coord.col - coord.row) * TILE_W) / 2,
+    y: origin.y + ((coord.row + coord.col) * TILE_H) / 2,
+  };
+};
+
+export const getTileDepth = (coord: Coordinates): number =>
+  coord.row * TILE_H + coord.col * TILE_W + coord.row;
+
+export const hasBlock = (tile: TileModel, blocks: BlockModel[]): boolean =>
   !isNil(
     blocks.find(
       (block) =>
@@ -139,8 +145,5 @@ export const hasBlock = (tile: TileModel, blocks: BlockModel[]) =>
     )
   );
 
-export const getBlock = (tile: TileModel, blocks: BlockModel[]) =>
-  blocks.find(
-    (block) =>
-      block.coord.row === tile.coord.row && block.coord.col === tile.coord.col
-  );
+export const sortByDepth = (a: GameObjectsType, b: GameObjectsType) =>
+  a.depth - b.depth;
