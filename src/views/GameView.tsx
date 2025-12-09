@@ -1,10 +1,11 @@
-import { FC, useCallback, useEffect, useRef } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { Layer, Stage } from "react-konva";
 
 import Block from "@/components/block/Block";
 import CompleteModal from "@/components/complete-modal/CompleteModal";
 import GameControls from "@/components/game-controls/GameControls";
 import GameFooter from "@/components/game-footer/GameFooter";
+import LevelSelectModal from "@/components/level-select-modal/LevelSelectModal";
 import Player from "@/components/player/Player";
 import Tile from "@/components/tile/Tile";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
@@ -28,6 +29,7 @@ const GameView: FC = () => {
    * STATE
    */
   const containerRef = useRef<HTMLDivElement>(null);
+  const [showLevelSelect, setShowLevelSelect] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
 
@@ -115,6 +117,14 @@ const GameView: FC = () => {
     [eventHandler, isLevelComplete]
   );
 
+  const handleShowLevelSelect = () => {
+    setShowLevelSelect(true);
+  };
+
+  const handleHideLevelSelect = () => {
+    setShowLevelSelect(false);
+  };
+
   /**
    * RENDER
    */
@@ -126,7 +136,7 @@ const GameView: FC = () => {
         tabIndex={-1}
         onKeyDown={handleKeyPress}
       >
-        <GameControls />
+        <GameControls onOpen={handleShowLevelSelect} />
         <Stage height={480} width={640}>
           <Layer>
             {gameObjects?.map((obj: GameObjectsType) => {
@@ -154,6 +164,10 @@ const GameView: FC = () => {
         <GameFooter />
       </div>
       <CompleteModal open={isLevelComplete} />
+      <LevelSelectModal
+        open={showLevelSelect}
+        onClose={handleHideLevelSelect}
+      />
     </>
   );
 };

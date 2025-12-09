@@ -1,7 +1,7 @@
 import { FC } from "react";
 import cn from "classnames";
 import { uniqueId } from "lodash";
-import { Box } from "react-bootstrap-icons";
+import { BoxFill } from "react-bootstrap-icons";
 
 import { useAppSelector } from "@/hooks/redux-hooks";
 import { BlockModel } from "@/lib/game.model";
@@ -24,11 +24,13 @@ const GameControls = (): FC => {
         {blocks?.map((block: BlockModel) => {
           const boxClass: string = cn({
             "mx-1": true,
-            "text-blue-300": !block.isComplete,
+            "text-blue-200": !block.isComplete,
             "text-green-400": block.isComplete,
           });
 
-          return <Box className={boxClass} key={uniqueId("box")} size={32} />;
+          return (
+            <BoxFill className={boxClass} key={uniqueId("box")} size={32} />
+          );
         })}
       </div>
     </div>
