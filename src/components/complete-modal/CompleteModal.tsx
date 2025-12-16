@@ -2,7 +2,7 @@ import { FC, useCallback } from "react";
 import cn from "classnames";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
-import { LEVELS } from "@/lib/game.constants";
+import { LEVELS } from "@/lib/level.constants";
 import { LevelActions } from "@/store/level-actions";
 import { getTheLevelInfo } from "@/store/level-slice";
 
@@ -16,7 +16,9 @@ const CompleteModal = ({ open }: ModalProps): FC => {
    */
   const dispatch = useAppDispatch();
 
-  const { currentLevel, moveCount } = useAppSelector((state) => state.level);
+  const { currentLevel, moveCount, pushCount } = useAppSelector(
+    (state) => state.level
+  );
   const levelInfo = useAppSelector(getTheLevelInfo);
 
   /**
@@ -46,6 +48,7 @@ const CompleteModal = ({ open }: ModalProps): FC => {
         <h3 className="text-center text-2xl mb-4">Puzzle Solved!</h3>
         <p>{levelInfo?.title || ""}</p>
         <p>Your Moves: {moveCount}</p>
+        <p>Boxes Pushed: {pushCount}</p>
 
         <div className="modal-action">
           <button

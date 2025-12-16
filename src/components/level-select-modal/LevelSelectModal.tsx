@@ -2,7 +2,7 @@ import { FC, useCallback } from "react";
 import cn from "classnames";
 import { uniqueId } from "lodash";
 
-import { LEVELS } from "@/lib/game.constants";
+import { LEVELS } from "@/lib/level.constants";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { LevelActions } from "@/store/level-actions";
 

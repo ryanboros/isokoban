@@ -1,4 +1,4 @@
-import { Dimensions, Level } from "./game.model";
+import { Dimensions } from "./game.model";
 
 export const COLORS = {
   // blues
@@ -52,16 +52,3 @@ export const UP = "up" as const;
 export const DOWN = "down" as const;
 export const RIGHT = "right" as const;
 export const LEFT = "left" as const;
-
-export const LEVELS: Level[] = [
-  { data: "microban001", title: "Level 01", shortTitle: "01" },
-  { data: "microban002", title: "Level 02", shortTitle: "02" },
-  { data: "microban003", title: "Level 03", shortTitle: "03" },
-  { data: "microban004", title: "Level 04", shortTitle: "04" },
-  { data: "microban005", title: "Level 05", shortTitle: "05" },
-  { data: "microban007", title: "Level 06", shortTitle: "06" },
-  { data: "microban009", title: "Level 07", shortTitle: "07" },
-  { data: "microban011", title: "Level 08", shortTitle: "08" },
-  { data: "microban012", title: "Level 09", shortTitle: "09" },
-  { data: "microban013", title: "Level 10", shortTitle: "10" },
-];

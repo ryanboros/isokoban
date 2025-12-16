@@ -23,13 +23,14 @@ import {
   getOrigin,
   sortByDepth,
 } from "@/lib/game.utils";
-import { LEVELS } from "../lib/game.constants";
+import { LEVELS } from "../lib/level.constants";
 
 interface LevelProps {
   gameObjects: GameObjectsType[] | null;
   isLevelComplete: boolean;
   level: LevelModel | null;
   moveCount: number;
+  pushCount: number;
 }
 
 const initialState: LevelProps = {
@@ -38,6 +39,7 @@ const initialState: LevelProps = {
   isLevelComplete: false,
   level: null,
   moveCount: 0,
+  pushCount: 0,
 };
 
 export const LevelSlice = createSlice({
@@ -53,6 +55,7 @@ export const LevelSlice = createSlice({
       state.gameObjects = null;
       state.isLevelComplete = false;
       state.moveCount = 0;
+      state.pushCount = 0;
     },
     buildLevel: (state, action: PayloadAction<Dimensions>) => {
       const level: LevelModel = current(state).level as LevelModel;
@@ -74,6 +77,7 @@ export const LevelSlice = createSlice({
         sortByDepth
       );
       state.moveCount = 0;
+      state.pushCount = 0;
       state.isLevelComplete = false;
     },
     movePlayer: (state, action: PayloadAction<TileModel>) => {
@@ -126,6 +130,7 @@ export const LevelSlice = createSlice({
         .every((obj: BlockModel) => obj.isComplete);
 
       state.gameObjects = updateGameObjects.sort(sortByDepth);
+      state.pushCount++;
     },
   },
 });

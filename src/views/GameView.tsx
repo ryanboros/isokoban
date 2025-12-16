@@ -14,13 +14,13 @@ import {
   DOWN,
   BLOCK,
   LEFT,
-  LEVELS,
   PLAYER,
   RIGHT,
   UP,
 } from "@/lib/game.constants";
 import { getBlock, getNextTile, hasBlock } from "@/lib/game.utils";
 import { GameObjectsType, MoveType } from "@/lib/game.model";
+import { LEVELS } from "@/lib/level.constants";
 import { fetchLevel, LevelActions } from "@/store/level-actions";
 import { getTheBlocks, getThePlayer, getTheTiles } from "@/store/level-slice";
 
@@ -49,6 +49,7 @@ const GameView: FC = () => {
     } else {
       if (gameObjects == null) {
         dispatch(LevelActions.buildLevel(CANVAS_SIZE));
+        containerRef.current.focus();
       }
     }
   }, [currentLevel, dispatch, gameObjects, level]);
@@ -131,10 +132,10 @@ const GameView: FC = () => {
   return (
     <>
       <div
-        className="w-[640px] height-[480px] bg-white rounded-xl"
+        className="w-[640px] height-[480px] bg-white rounded-xl focus:outline-none"
         ref={containerRef}
-        tabIndex={-1}
         onKeyDown={handleKeyPress}
+        tabIndex={-1}
       >
         <GameControls onOpen={handleShowLevelSelect} />
         <Stage height={480} width={640}>
