@@ -9,6 +9,7 @@ import { getTheLevelInfo } from "@/store/level-slice";
 interface GameControlsProps {
   onOpen: () => void;
 }
+
 const GameControls = ({ onOpen }: GameControlsProps): FC => {
   /**
    * STATE
@@ -28,7 +29,10 @@ const GameControls = ({ onOpen }: GameControlsProps): FC => {
    * RENDER
    */
   return (
-    <div className="text-center my-4 mx-4 flex flex-row justify-between items-center">
+    <div
+      className="text-center my-4 mx-4 flex flex-row justify-between items-center"
+      data-testid="game-controls"
+    >
       <button className="btn btn-active btn-info text-white" onClick={onOpen}>
         <Grid3x3GapFill size={22} />
       </button>
